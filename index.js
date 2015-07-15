@@ -1,7 +1,8 @@
-var forever = require('forever-monitor');
+var spawn = require('child_process').spawn;
 
 function startEmu() {
-  var command = ['qemu-system-x86_64',
+  var command = 'qemu-system-x86_64';
+  var args = [
     '-m', '128',
     '-hda', process.env.EMU_DISK,
     '-net', 'nic,model=pcnet',
@@ -13,41 +14,36 @@ function startEmu() {
     '-usbdevice', 'tablet',
     '-snapshot'
   ];
+  var options = {
+    stdio: 'inherit'
+  };
 
-  var child = forever.start(command, {
-    max: 1,
-    silent: false
-  });
-
-  child.on('exit', function() {
-    console.log('The emulator has crashed. Restarting...');
+  var instance = spawn(command, args, options);
+  instance.on('close', function(code) {
+    console.log(new Date + ' - qemu closed with code: ' + code);
     setTimeout(function() {
       startEmu();
-    }, 2000);
+    }, 500);
   });
-
-  child.start();
 }
 
 function startCPULimit() {
-  var command = ['cpulimit',
+  var command = 'cpulimit';
+  var args = [
     '-e', 'qemu-system-x86_64',
     '-l', '50'
   ];
+  var options = {
+    stdio: 'inherit'
+  };
 
-  var child = forever.start(command, {
-    max: 1,
-    silent: false
-  });
-
-  child.on('exit', function() {
-    console.log('CPULimit has crashed. Restarting...');
+  var instance = spawn(command, args, options);
+  instance.on('close', function(code) {
+    console.log(new Date + ' - cpulimit closed with code: ' + code);
     setTimeout(function() {
       startCPULimit();
-    }, 2000);
+    }, 500);
   });
-
-  child.start();
 }
 
 startEmu();
