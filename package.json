@@ -1,0 +1,23 @@
+{
+  "name": "retro-forever",
+  "version": "0.1.0",
+  "description": "A forever script to start QEMU on sbekti/retro.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbekti/retro-forever.git"
+  },
+  "author": "Samudra Harapan Bekti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sbekti/retro-forever/issues"
+  },
+  "homepage": "https://github.com/sbekti/retro-forever#readme",
+  "dependencies": {
+    "forever-monitor": "^1.5.2"
+  }
+}
